@@ -1,4 +1,4 @@
-#include<iostream>
+#include<iostream>   
 #include<fstream>
 #include<sstream>
 #include<conio.h>
@@ -46,7 +46,6 @@ void getUsers( userInfo usersArray[], ifstream& file){
         counter++;
         s.clear();
     }
-
 }
 
 bool validUser(string username, string password, userInfo list[]){
@@ -65,16 +64,16 @@ bool validUser(string username, string password, userInfo list[]){
 int main(){
 
     ifstream usersData("usersData.csv");   //file with users Data
-    bool inSystem;                         //To end or continue with the session
+    bool inSystem=false;                   //To end or continue with the session
     int numAnswer;                         //To end or continue with the session
-
+    userInfo usersList [500];              //users List
+    getUsers(usersList, usersData);
     cout<<"¡Bienvenido a la libreria!"<<endl<<endl;
     cout<<"Log in"<<endl<<"---------------"<<endl;
     int logInAttempts=1;
 
-    while(inSystem==false && logInAttempts<4){
-    userInfo usersList [500];              //users List
-    getUsers(usersList, usersData);
+    while(inSystem==false && logInAttempts<=3){
+   
     string username;
     string password="";
     char ch;
@@ -98,19 +97,16 @@ int main(){
         cout<<"Log in exitoso"<<endl<<"---------------"<<endl;
         inSystem=true;
     }else{
-        cout<<"Ha ingresado un nombre de usuario o contraseña incorrecto. Por favor intente de nuevo"<<endl<<"---------------"<<endl;
+        cout<<"Ha ingresado un nombre de usuario o contraseña incorrecto."<<endl<<"---------------"<<endl;
         logInAttempts++;
         inSystem=false;
+        password="";
         if(logInAttempts==4){
             cout<<"fin del nro de intentos"<<endl<<"---------------"<<endl;
         }
     }
-    }
-
-     
-    
-
-
+}
+  
     while(inSystem){
         //////////////////////all allowed within system(beginnig)
         cout<<endl<<"Ingreso y opciones"<<endl;
