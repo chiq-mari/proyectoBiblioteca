@@ -124,10 +124,15 @@ int main(){
                 cout<<endl<<"Usuario creado con éxito!"<<endl<<"---------------"<<endl;
 
                 usersData.close();
-                ofstream usersData;
-                usersData.open("usersData.csv",ios:: app);
-                usersData<<endl<<newName<<','<<newLastName<<','<<newUsername<<','<<newPassword<<','<<newUserStatus<<','<<newUserType<<","<<newBook;
-                usersData.close();
+                ofstream usersData1;
+                usersData1.open("usersData.csv",ios:: app);
+                usersData1<<"\n"<<newName<<','<<newLastName<<','<<newUsername<<','<<newPassword<<','<<newUserStatus<<','<<newUserType<<","<<newBook;
+
+                usersData1.close();
+                // leave it as it was
+                usersData.open("usersData.csv");
+                getUsers(usersList, usersData);
+
                 /* code */
                 break;
                 }
@@ -231,6 +236,10 @@ int main(){
 
     }//while para seguir dentro del sistena
     cout<<"---------------"<<endl<<"Gracias por preferirnos!"<<endl;
+
+    for(int i=0; i<500; i++){
+        cout<<usersList[i].name<<endl<<usersList[i].book<<endl;
+    }
 
 }//main
 
