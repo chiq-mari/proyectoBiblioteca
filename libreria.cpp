@@ -236,11 +236,6 @@ int main(){
 
     }//while para seguir dentro del sistena
     cout<<"---------------"<<endl<<"Gracias por preferirnos!"<<endl;
-
-    for(int i=0; i<500; i++){
-        cout<<usersList[i].name<<endl<<usersList[i].book<<endl;
-    }
-
 }//main
 
 //implementaciones
