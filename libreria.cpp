@@ -99,12 +99,13 @@ int main(){
             cout<<endl<<"Elija una entre las siguientes opciones: "<<endl;
             cout<<"a. Crear cuenta"<<endl;
             cout<<"b. Eliminar cuenta"<<endl;
-            cout<<"c. Añadir libro"<<endl;
-            cout<<"d. Eliminar libro"<<endl;
-            cout<<"e. Modificar libro"<<endl;
-            cout<<"f. Comprar libro"<<endl;
-            cout<<"g. Alquilar libro"<<endl;
-            cout<<"h. Retornar un libro"<<endl;
+            cout<<"c. Suspender usuario"<<endl;
+            cout<<"d. Añadir libro"<<endl;
+            cout<<"e. Eliminar libro"<<endl;
+            cout<<"f. Modificar libro"<<endl;
+            cout<<"g. Comprar libro"<<endl;
+            cout<<"h. Alquilar libro"<<endl;
+            cout<<"i. Retornar un libro"<<endl;
             cin>>opt;
             cout<<"---------------"<<endl;
             switch (opt)
@@ -177,12 +178,43 @@ int main(){
                 }
                 usersData1.close();                  //close ofstream
                 usersData.open("usersData.csv");     //open ifstream
-
-            }
-            
+            }            
                 /* code */
                 break;
-            case 'c':
+            case 'c':           //suspender a usuario
+            {
+                string newUsername;
+                int indexToSuspend;
+                int indexToWrite=0;
+
+                do{               //obtiene el indice
+                cout<<"Ingrese el nombre de usuario que desea suspender: ";
+                cin>>newUsername;
+                if(!repeatedUsername( newUsername, usersList, indexToSuspend)){
+                    cout<<"Ingrese un nombre de usuario válido"<<endl;    
+                }                
+                }while(!repeatedUsername( newUsername, usersList));
+
+                cout<<indexToSuspend;
+
+                if(usersList[indexToSuspend].userStatus=="suspended"){
+                    cout<<"Ya el usuario se encuentra suspendido"<<endl;
+                }else{
+                    usersList[indexToSuspend].userStatus="suspended";
+
+                    usersData.close();                      //cierre el flujo de entrada
+
+                    ofstream usersData1("usersData.csv");   // abra el de salida
+
+                    usersData1<<"nombre,lastName,username,password,userStatus,userType,book";
+                    while(usersList[indexToWrite].name!=""){
+                        usersData1<<endl<<usersList[indexToWrite].name<<','<<usersList[indexToWrite].lastName<<','<<usersList[indexToWrite].username<<','<<usersList[indexToWrite].password<<','<<usersList[indexToWrite].userStatus<<','<<usersList[indexToWrite].userType<<','<<usersList[indexToWrite].book;
+                        indexToWrite++;
+                    }
+                    usersData1.close();                  //close ofstream
+                    usersData.open("usersData.csv");     //open ifstream
+                }
+            }
                 /* code */
                 break;
             case 'd':
@@ -198,6 +230,9 @@ int main(){
                 /* code */
                 break;
             case 'h':
+                /* code */
+                break;
+            case 'i':
                 /* code */
                 break;
             default:
