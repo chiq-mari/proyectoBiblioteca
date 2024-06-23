@@ -31,7 +31,7 @@ void movePByOne(userInfo [], int);                    /*modifies the array so th
 
 int main(){
 
-    ifstream usersData("usersData.csv");   //file with users Data
+    ifstream usersData("../assets/usersData.csv");   //file with users Data
     bool inSystem=false;                   //To end or continue with the session
     int numAnswer;                         //To end or continue with the session
     userInfo usersList [500];              //users List
@@ -142,12 +142,12 @@ int main(){
 
                 usersData.close();
                 ofstream usersData1;
-                usersData1.open("usersData.csv",ios:: app);
+                usersData1.open("../assets/usersData.csv",ios:: app);
                 usersData1<<"\n"<<newName<<','<<newLastName<<','<<newUsername<<','<<newPassword<<','<<newUserStatus<<','<<newUserType<<","<<newBook;
 
                 usersData1.close();
                 // leave it as it was
-                usersData.open("usersData.csv");
+                usersData.open("../assets/usersData.csv");
                 getUsers(usersList, usersData);
 
                 /* code */
@@ -169,7 +169,7 @@ int main(){
                 movePByOne(usersList, indexToDelete);   // acomoda el arreglo
                 usersData.close();                      //cierre el flujo de entrada
 
-                ofstream usersData1("usersData.csv");   // abra el de salida
+                ofstream usersData1("../assets/usersData.csv");   // abra el de salida
 
                 usersData1<<"nombre,lastName,username,password,userStatus,userType,book";
                 while(usersList[indexToWrite].name!=""){
@@ -177,7 +177,7 @@ int main(){
                     indexToWrite++;
                 }
                 usersData1.close();                  //close ofstream
-                usersData.open("usersData.csv");     //open ifstream
+                usersData.open("../assets/usersData.csv");     //open ifstream
             }            
                 /* code */
                 break;
@@ -204,7 +204,7 @@ int main(){
 
                     usersData.close();                      //cierre el flujo de entrada
 
-                    ofstream usersData1("usersData.csv");   // abra el de salida
+                    ofstream usersData1("../assets/usersData.csv");   // abra el de salida
 
                     usersData1<<"nombre,lastName,username,password,userStatus,userType,book";
                     while(usersList[indexToWrite].name!=""){
@@ -212,7 +212,7 @@ int main(){
                         indexToWrite++;
                     }
                     usersData1.close();                  //close ofstream
-                    usersData.open("usersData.csv");     //open ifstream
+                    usersData.open("../assets/usersData.csv");     //open ifstream
                 }
             }
                 /* code */
