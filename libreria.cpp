@@ -14,6 +14,9 @@ struct userInfo{
     string book;     //none or bookTitle  
 };
 
+//variables globales
+userInfo emptyUser={"","", "", "", "", "", ""};
+
 //declaraciones
 void getUsers( userInfo[], ifstream& );   // gets a list with the users info as userInfo datatype
 
@@ -21,12 +24,18 @@ bool validUser(string, string, userInfo[], int&); //returns true if the user can
 
 bool repeatedUsername(string , userInfo []);    //returns true if the string passed is a repeated username
 
+bool repeatedUsername(string , userInfo [], int&);    //returns true if the string passed is a repeated username
+
+void movePByOne(userInfo [], int);                    /*modifies the array so that the elements after the index showed
+                                                      appear one index ahead and the element at the such index disappears*/      
+
 int main(){
 
     ifstream usersData("usersData.csv");   //file with users Data
     bool inSystem=false;                   //To end or continue with the session
     int numAnswer;                         //To end or continue with the session
     userInfo usersList [500];              //users List
+    string status;                          //active or suspended
     getUsers(usersList, usersData);
     int userIndex=0;
     char opt;                              //to choose an action
@@ -56,8 +65,16 @@ int main(){
     cout<<endl<<"Autenticando..."<<endl;
 
     if (validUser(username,password,usersList, userIndex)){
-        cout<<"Log in exitoso"<<endl<<"---------------"<<endl;
-        inSystem=true;
+        status=usersList[userIndex].userStatus;
+        if(status=="active"){     // si esta activo permite la entrada
+            cout<<"Log in exitoso"<<endl<<"---------------"<<endl;
+            inSystem=true;
+        }else{                    //la unica otra opcion es que este suspendido
+            cout<<"Su cuenta se encuentra suspendida"<<endl;
+            inSystem=false;
+            logInAttempts=4;
+        }
+
     }else{
         cout<<"Ha ingresado un nombre de usuario o contraseña incorrecto."<<endl<<"---------------"<<endl;
         logInAttempts++;
@@ -82,13 +99,12 @@ int main(){
             cout<<endl<<"Elija una entre las siguientes opciones: "<<endl;
             cout<<"a. Crear cuenta"<<endl;
             cout<<"b. Eliminar cuenta"<<endl;
-            cout<<"c. Modificar cuenta"<<endl;
-            cout<<"d. Añadir libro"<<endl;
-            cout<<"e. Eliminar libro"<<endl;
-            cout<<"f. Modificar libro"<<endl;
-            cout<<"g. Comprar libro"<<endl;
-            cout<<"h. Alquilar libro"<<endl;
-            cout<<"i. Retornar un libro"<<endl;
+            cout<<"c. Añadir libro"<<endl;
+            cout<<"d. Eliminar libro"<<endl;
+            cout<<"e. Modificar libro"<<endl;
+            cout<<"f. Comprar libro"<<endl;
+            cout<<"g. Alquilar libro"<<endl;
+            cout<<"h. Retornar un libro"<<endl;
             cin>>opt;
             cout<<"---------------"<<endl;
             switch (opt)
@@ -136,7 +152,34 @@ int main(){
                 /* code */
                 break;
                 }
-            case 'b':
+            case 'b':   //eliminar cuenta
+            {   
+                string newUsername;
+                int indexToDelete;
+                int indexToWrite=0; 
+                do{               //obtiene el indice
+                cout<<"Ingrese el nombre de usuario que desea eliminar: ";
+                cin>>newUsername;
+                if(!repeatedUsername( newUsername, usersList, indexToDelete)){
+                    cout<<"Ingrese un nombre de usuario válido"<<endl;    
+                }                
+                }while(!repeatedUsername( newUsername, usersList));
+
+                movePByOne(usersList, indexToDelete);   // acomoda el arreglo
+                usersData.close();                      //cierre el flujo de entrada
+
+                ofstream usersData1("usersData.csv");   // abra el de salida
+
+                usersData1<<"nombre,lastName,username,password,userStatus,userType,book";
+                while(usersList[indexToWrite].name!=""){
+                    usersData1<<endl<<usersList[indexToWrite].name<<','<<usersList[indexToWrite].lastName<<','<<usersList[indexToWrite].username<<','<<usersList[indexToWrite].password<<','<<usersList[indexToWrite].userStatus<<','<<usersList[indexToWrite].userType<<','<<usersList[indexToWrite].book;
+                    indexToWrite++;
+                }
+                usersData1.close();                  //close ofstream
+                usersData.open("usersData.csv");     //open ifstream
+
+            }
+            
                 /* code */
                 break;
             case 'c':
@@ -157,10 +200,6 @@ int main(){
             case 'h':
                 /* code */
                 break;
-            case 'i':
-                /* code */
-                break;
-            
             default:
                 cout<<opt<<". no es una opción válida"<<endl;
                 break;
@@ -290,4 +329,26 @@ bool repeatedUsername(string username, userInfo list[]){
         }
     }
     return false;   
+}
+
+bool repeatedUsername(string username, userInfo list[], int& a){
+    int counter=0;
+    while(list[counter].name!=""){
+        if(list[counter].username==username){
+            a= counter;
+            return true;
+        }else{
+        counter++;
+        a=-1;
+        }
+    }
+    return false;   
+}
+
+void movePByOne(userInfo usersArray[], int a){   //knwoing it has 500 elements at most
+    for(int i=a; i<499; i++){
+        usersArray[i]=usersArray[i+1];
+    }
+    usersArray[499]=emptyUser;
+    
 }
