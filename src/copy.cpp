@@ -14,6 +14,19 @@ struct userInfo{
     string book;     //none or bookTitle  
 };
 
+struct bookInfo{
+    string bookCode;
+    string bookTitle;
+    string author;
+    string genre;
+    string releaseYear;
+    string bookPrice;
+    string rentalPrice;
+    string bookStatus;
+    string by;
+};
+
+
 //variables globales
 userInfo emptyUser={"","", "", "", "", "", ""};
 
@@ -27,7 +40,15 @@ bool repeatedUsername(string , userInfo []);    //returns true if the string pas
 bool repeatedUsername(string , userInfo [], int&);    //returns true if the string passed is a repeated username
 
 void movePByOne(userInfo [], int);                    /*modifies the array so that the elements after the index showed
-                                                      appear one index ahead and the element at the such index disappears*/      
+                                                      appear one index ahead and the element at the such index disappears*/
+
+void getBooks(bookInfo [], ifstream&);
+
+void printBooks(bookInfo[]);
+
+void printUsers(userInfo[]);
+
+
 
 int main(){
 
@@ -85,6 +106,11 @@ int main(){
         }
     }
 }// log in end
+
+    ifstream booksData("../assets/booksData.csv");
+    bookInfo booksList[150];
+    getBooks(booksList, booksData);
+
 
     userInfo actualUser;  //recover actual user info
     actualUser=usersList[userIndex];
@@ -310,6 +336,10 @@ int main(){
 
     }//while para seguir dentro del sistena
     cout<<"---------------"<<endl<<"Gracias por preferirnos!"<<endl;
+
+    printBooks(booksList);
+    printUsers(usersList);
+
 }//main
 
 //implementaciones
@@ -388,12 +418,12 @@ void movePByOne(userInfo usersArray[], int a){   //knwoing it has 500 elements a
     
 }
 
-void getBooks(booksInfo booksArray[], ifstream& file){   
+void getBooks(bookInfo booksArray[], ifstream& file){   
     string lineInfo;
     stringstream v;
     int counter=0;
 
-    booksInfo newBook;
+    bookInfo newBook;
 
     while(!file.eof()){
         
@@ -419,3 +449,22 @@ void getBooks(booksInfo booksArray[], ifstream& file){
         v.clear();
     }
 }
+
+void printBooks(bookInfo booksArray[]){
+    int count=0;
+    while(booksArray[count].bookCode!=""){
+        cout<<booksArray[count].bookCode<<','<<booksArray[count].bookTitle<<','<<booksArray[count].author<<','<<booksArray[count].genre<<','<<booksArray[count].releaseYear<<','<<booksArray[count].bookPrice<<','<<booksArray[count].rentalPrice<<','<<booksArray[count].bookStatus<<','<<booksArray[count].by<<endl;
+        count++;
+    }
+
+}
+
+void printUsers(userInfo usersArray[]){
+    int count=0;
+    while(usersArray[count].name!=""){
+        cout<<usersArray[count].name<<','<<usersArray[count].lastName<<','<<usersArray[count].username<<','<<usersArray[count].password<<','<<usersArray[count].userStatus<<','<<usersArray[count].userType<<','<<usersArray[count].book<<endl;
+        count++;
+    }
+
+}
+

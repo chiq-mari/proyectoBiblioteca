@@ -1,4 +1,4 @@
-bookCode,bookTitle,author,genre,realeaseYear,bookPrice,rentalPrice,bookStatus,by
+bookCode,bookTitle,author,genre,releaseYear,bookPrice,rentalPrice,bookStatus,by
 SP02,The Sixth Extinction,Drusie Dore,non-fiction,1950,14,5,disponible,nadie
 ED54,The Year of Magical Thinking,Sheelah Ashenhurst,non-fiction,1902,14,7,disponible,nadie
 QU74,No Logo,Lorelle Manthroppe,non-fiction,2016,17,10,disponible,nadie
@@ -68,7 +68,7 @@ VK26,Daemon,Anallese Carme,sci-fiction,1984,16,5,disponible,nadie
 WJ44,Dancing Jack,Zara Beidebeke,sci-fiction,1952,18,10,disponible,nadie
 CD60,Dark Universe,Jarrid Summergill,sci-fiction,1991,15,6,disponible,nadie
 LU40,Desolation Road,Alma Shoebotham,sci-fiction,1954,16,10,disponible,nadie
-ZH13, Dhalgren,Florri Nosworthy,sci-fiction,1994,17,10,disponible,nadie
+ZH13,ï¿½Dhalgren,Florri Nosworthy,sci-fiction,1994,17,10,disponible,nadie
 VD49,The Dimensioneers,Charlene Hallen,sci-fiction,1949,14,10,disponible,nadie
 VC69,Dream Park,Joella Hurran,sci-fiction,1936,16,10,disponible,nadie
 KO68,Dune,Zedekiah Claxton,sci-fiction,1978,13,10,disponible,nadie
