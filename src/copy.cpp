@@ -14,8 +14,8 @@ struct userInfo{
     string book;     //none or bookTitle  
 };
 
-struct bookInfo{
-    string bookCode;
+struct booksInfo{
+    string bookCode="";
     string bookTitle;
     string author;
     string genre;
@@ -23,9 +23,8 @@ struct bookInfo{
     string bookPrice;
     string rentalPrice;
     string bookStatus;
-    string by;
+    string by="nadie";
 };
-
 
 //variables globales
 userInfo emptyUser={"","", "", "", "", "", ""};
@@ -42,11 +41,17 @@ bool repeatedUsername(string , userInfo [], int&);    //returns true if the stri
 void movePByOne(userInfo [], int);                    /*modifies the array so that the elements after the index showed
                                                       appear one index ahead and the element at the such index disappears*/
 
-void getBooks(bookInfo [], ifstream&);
+void getBooks(booksInfo [], ifstream&);
 
-void printBooks(bookInfo[]);
+void printBooks(booksInfo[]);
 
 void printUsers(userInfo[]);
+
+bool repeatedBookCode(string, booksInfo[], int&);
+
+bool repeatedBookCode(string, booksInfo[]);
+
+bool repeatedBook(booksInfo, booksInfo[]);
 
 
 
@@ -107,9 +112,9 @@ int main(){
     }
 }// log in end
 
-    ifstream booksData("../assets/booksData.csv");
-    bookInfo booksList[150];
-    getBooks(booksList, booksData);
+    ifstream booksData("../assets/booksData.csv");  
+    booksInfo booksList[150];  
+    getBooks(booksList, booksData); 
 
 
     userInfo actualUser;  //recover actual user info
@@ -340,6 +345,14 @@ int main(){
     printBooks(booksList);
     printUsers(usersList);
 
+    int y=0;
+    cout<<repeatedBookCode("PK58", booksList)<<endl;
+    cout<<repeatedBookCode("PK57", booksList, y)<<endl<<y;
+
+    booksInfo bookcito= {"OH73","Awopbopaloobop","Karlotte Jull","non-fiction","2015","18","10","disponible","nadie"};
+
+    cout<<repeatedBook(bookcito, booksList);
+
 }//main
 
 //implementaciones
@@ -418,12 +431,12 @@ void movePByOne(userInfo usersArray[], int a){   //knwoing it has 500 elements a
     
 }
 
-void getBooks(bookInfo booksArray[], ifstream& file){   
+void getBooks(booksInfo booksArray[], ifstream& file){   
     string lineInfo;
     stringstream v;
     int counter=0;
 
-    bookInfo newBook;
+    booksInfo newBook;
 
     while(!file.eof()){
         
@@ -450,7 +463,7 @@ void getBooks(bookInfo booksArray[], ifstream& file){
     }
 }
 
-void printBooks(bookInfo booksArray[]){
+void printBooks(booksInfo booksArray[]){
     int count=0;
     while(booksArray[count].bookCode!=""){
         cout<<booksArray[count].bookCode<<','<<booksArray[count].bookTitle<<','<<booksArray[count].author<<','<<booksArray[count].genre<<','<<booksArray[count].releaseYear<<','<<booksArray[count].bookPrice<<','<<booksArray[count].rentalPrice<<','<<booksArray[count].bookStatus<<','<<booksArray[count].by<<endl;
@@ -467,4 +480,46 @@ void printUsers(userInfo usersArray[]){
     }
 
 }
+bool repeatedBookCode(string code, booksInfo booksArray[]){  
+    int counter=0;
+    while(booksArray[counter].bookCode!=""){
+        if(code==booksArray[counter].bookCode){
+            return true;
+        }
+        else{
+            counter++;
+        }
+    }
+    return false;
+}
 
+bool repeatedBookCode(string code, booksInfo booksArray[], int& b){  
+    int counter=0;
+    while(booksArray[counter].bookCode!=""){
+        if(code==booksArray[counter].bookCode){
+            b=counter;
+            return true;
+        }
+        else{
+            counter++;
+            b=-1;
+        }
+    }
+    return false;
+}
+
+bool repeatedBook(booksInfo a, booksInfo booksArray[]){ 
+    int counter=0;
+    //two books are the same if they have equal title, author, genre, year
+    while(booksArray[counter].bookCode!=""){
+        cout<<booksArray[counter].bookCode<<endl;
+        if(a.bookTitle==booksArray[counter].bookTitle && a.author==booksArray[counter].author && a.genre==booksArray[counter].genre && a.releaseYear==booksArray[counter].releaseYear){
+            return true;
+        }
+        else{
+            counter++;
+        }
+    }
+    return false;
+    
+}

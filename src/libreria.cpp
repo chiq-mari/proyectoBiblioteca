@@ -14,6 +14,18 @@ struct userInfo{
     string book;     //none or bookTitle  
 };
 
+struct booksInfo{
+    string bookCode="";
+    string bookTitle;
+    string author;
+    string genre;
+    string releaseYear;
+    string bookPrice;
+    string rentalPrice;
+    string bookStatus;
+    string by="nadie";
+};
+
 //variables globales
 userInfo emptyUser={"","", "", "", "", "", ""};
 
@@ -27,7 +39,18 @@ bool repeatedUsername(string , userInfo []);    //returns true if the string pas
 bool repeatedUsername(string , userInfo [], int&);    //returns true if the string passed is a repeated username
 
 void movePByOne(userInfo [], int);                    /*modifies the array so that the elements after the index showed
-                                                      appear one index ahead and the element at the such index disappears*/      
+                                                      appear one index ahead and the element at the such index disappears*/
+void getBooks(booksInfo [], ifstream&);
+
+void printBooks(booksInfo[]);
+
+void printUsers(userInfo[]);
+
+bool repeatedBookCode(string, booksInfo[], int&);
+
+bool repeatedBookCode(string, booksInfo[]);
+
+bool repeatedBook(booksInfo, booksInfo[]);      
 
 int main(){
 
@@ -85,6 +108,9 @@ int main(){
         }
     }
 }// log in end
+    ifstream booksData("../assets/booksData.csv");  
+    booksInfo booksList[150];  
+    getBooks(booksList, booksData); 
 
     userInfo actualUser;  //recover actual user info
     actualUser=usersList[userIndex];
@@ -310,6 +336,18 @@ int main(){
 
     }//while para seguir dentro del sistena
     cout<<"---------------"<<endl<<"Gracias por preferirnos!"<<endl;
+
+    printBooks(booksList);
+    printUsers(usersList);
+
+    int y=0;
+    cout<<repeatedBookCode("PK58", booksList)<<endl;
+    cout<<repeatedBookCode("PK57", booksList, y)<<endl<<y;
+
+    booksInfo bookcito= {"OH73","Awopbopaloobop","Karlotte Jull","non-fiction","2015","18","10","disponible","nadie"};
+
+    cout<<repeatedBook(bookcito, booksList);
+
 }//main
 
 //implementaciones
@@ -385,5 +423,98 @@ void movePByOne(userInfo usersArray[], int a){   //knwoing it has 500 elements a
         usersArray[i]=usersArray[i+1];
     }
     usersArray[499]=emptyUser;
+    
+}
+
+void getBooks(booksInfo booksArray[], ifstream& file){   
+    string lineInfo;
+    stringstream v;
+    int counter=0;
+
+    booksInfo newBook;
+
+    while(!file.eof()){
+        
+        getline(file, lineInfo);
+        if(lineInfo.substr(0,8)=="bookCode"){
+            continue;
+        }
+        v<<lineInfo;
+
+        getline(v, newBook.bookCode, ',');
+        getline(v, newBook.bookTitle, ',');
+        getline(v, newBook.author, ',');
+        getline(v, newBook.genre, ',');
+        getline(v, newBook.releaseYear, ',');
+        getline(v, newBook.bookPrice, ',');
+        getline(v, newBook.rentalPrice, ',');
+        getline(v, newBook.bookStatus, ',');
+        getline(v, newBook.by, ',');
+
+        booksArray[counter]=newBook;
+        counter++;
+        lineInfo="";
+        v.clear();
+    }
+}
+
+void printBooks(booksInfo booksArray[]){
+    int count=0;
+    while(booksArray[count].bookCode!=""){
+        cout<<booksArray[count].bookCode<<','<<booksArray[count].bookTitle<<','<<booksArray[count].author<<','<<booksArray[count].genre<<','<<booksArray[count].releaseYear<<','<<booksArray[count].bookPrice<<','<<booksArray[count].rentalPrice<<','<<booksArray[count].bookStatus<<','<<booksArray[count].by<<endl;
+        count++;
+    }
+
+}
+
+void printUsers(userInfo usersArray[]){
+    int count=0;
+    while(usersArray[count].name!=""){
+        cout<<usersArray[count].name<<','<<usersArray[count].lastName<<','<<usersArray[count].username<<','<<usersArray[count].password<<','<<usersArray[count].userStatus<<','<<usersArray[count].userType<<','<<usersArray[count].book<<endl;
+        count++;
+    }
+
+}
+bool repeatedBookCode(string code, booksInfo booksArray[]){  
+    int counter=0;
+    while(booksArray[counter].bookCode!=""){
+        if(code==booksArray[counter].bookCode){
+            return true;
+        }
+        else{
+            counter++;
+        }
+    }
+    return false;
+}
+
+bool repeatedBookCode(string code, booksInfo booksArray[], int& b){  
+    int counter=0;
+    while(booksArray[counter].bookCode!=""){
+        if(code==booksArray[counter].bookCode){
+            b=counter;
+            return true;
+        }
+        else{
+            counter++;
+            b=-1;
+        }
+    }
+    return false;
+}
+
+bool repeatedBook(booksInfo a, booksInfo booksArray[]){ 
+    int counter=0;
+    //two books are the same if they have equal title, author, genre, year
+    while(booksArray[counter].bookCode!=""){
+        cout<<booksArray[counter].bookCode<<endl;
+        if(a.bookTitle==booksArray[counter].bookTitle && a.author==booksArray[counter].author && a.genre==booksArray[counter].genre && a.releaseYear==booksArray[counter].releaseYear){
+            return true;
+        }
+        else{
+            counter++;
+        }
+    }
+    return false;
     
 }
