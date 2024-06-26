@@ -12,7 +12,7 @@ struct userInfo{
     string password;
     string userStatus; //active o suspended
     string userType; //admin, client, employee
-    string book;     //none or bookTitle  
+    string book;     //none or bookCode
 };
 
 struct booksInfo{
@@ -510,7 +510,93 @@ int main(){
                 /* code */
                 break;
             case 'h':        //alquilar libro
-                /* code */
+            {
+                int indice;
+                string genero;
+                char opt2;
+                string code;
+                cout<<"Seleccione el genero que desea de libro"<<endl<<"a.romance"<<endl<<"b.non-fiction"<<endl<<"c.sci-fiction"<<endl<<"d.mystery"<<endl;
+                cin>>opt2;
+                cout<<"---------------"<<endl;
+                switch (opt2)
+                {
+                case 'a':
+                    {genero="romance";}
+                    break;
+                case 'b':
+                    {genero="non-fiction";}
+                    break;
+                case 'c':
+                    {genero="sci-fiction";}
+                    break;
+                case 'd':
+                    {genero="mystery";}
+                    break;
+                
+                default:
+                    cout<<"Dicho genero no existe "<<endl;
+                    genero="no existe";
+                    break;
+                }
+
+                if(genero=="no existe"){
+                    break;
+                }
+                cout<<"Estos son los libros disponibles para su categoria"<<endl<<"---------------"<<endl;
+                printByCategory(genero, booksList);
+                cout<<"---------------"<<endl;
+
+                do{
+                cout<<"Ingrese el codigo del libro que desea alquilar: ";
+                cin>>code;
+                if(!repeatedBookCode(code, booksList, indice)){
+                    cout<<"Ingrese un codigo existente!"<<endl;
+                }
+                }while(!repeatedBookCode(code, booksList));
+
+                // modifica en lista(Book), file, usuario
+                booksList[indice].bookStatus="alquilado";   //lista
+
+                booksData.close();   
+
+                //escribe en file books
+                ofstream booksData1;
+                booksData1.open("../assets/booksData.csv");
+
+                booksData1<<"bookCode,bookTitle,author,genre,releaseYear,bookPrice,rentalPrice,bookStatus,by";
+                
+                int indexToWrite=0;
+                while(booksList[indexToWrite].bookCode!=""){
+                        booksData1<<endl<<booksList[indexToWrite].bookCode<<','<<booksList[indexToWrite].bookTitle<<','<<booksList[indexToWrite].author<<','<<booksList[indexToWrite].genre<<','<<booksList[indexToWrite].releaseYear<<','<<booksList[indexToWrite].bookPrice<<','<<booksList[indexToWrite].rentalPrice<<','<<booksList[indexToWrite].bookStatus<<','<<booksList[indexToWrite].by;
+                        indexToWrite++;
+                }                
+                booksData1.close();
+                booksData.open("../assets/booksData.csv");
+                // termina en files book
+
+                //escribe en usuario
+                int indice1=0;
+                repeatedUsername(actualUser.username,usersList, indice1);
+
+                usersList[indice1].book=code;
+                
+                //escribe en file usuarios
+                usersData.close();                      //cierre el flujo de entrada
+
+                ofstream usersData1("../assets/usersData.csv");   // abra el de salida
+
+                indexToWrite=0;
+                usersData1<<"nombre,lastName,username,password,userStatus,userType,book";
+                while(usersList[indexToWrite].name!=""){
+                    usersData1<<endl<<usersList[indexToWrite].name<<','<<usersList[indexToWrite].lastName<<','<<usersList[indexToWrite].username<<','<<usersList[indexToWrite].password<<','<<usersList[indexToWrite].userStatus<<','<<usersList[indexToWrite].userType<<','<<usersList[indexToWrite].book;
+                    indexToWrite++;
+                }
+                usersData1.close();                  //close ofstream
+                usersData.open("../assets/usersData.csv");     //open ifstream
+                //termina file usuarios
+                // modificaciones
+                cout<<"Alquiler procesado"<<endl;
+            }
                 break;
             case 'i':        //retornar libro
                 /* code */
