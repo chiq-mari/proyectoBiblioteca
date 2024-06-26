@@ -324,17 +324,118 @@ int main(){
                 while(booksList[indexToWrite].bookCode!=""){
                         booksData1<<endl<<booksList[indexToWrite].bookCode<<','<<booksList[indexToWrite].bookTitle<<','<<booksList[indexToWrite].author<<','<<booksList[indexToWrite].genre<<','<<booksList[indexToWrite].releaseYear<<','<<booksList[indexToWrite].bookPrice<<','<<booksList[indexToWrite].rentalPrice<<','<<booksList[indexToWrite].bookStatus<<','<<booksList[indexToWrite].by;
                         indexToWrite++;
-                }
-                
+                }                
                 cout<<"Libro eliminado"<<endl;
                 booksData1.close();
 
                 booksData.open("../assets/booksData.csv");
-
             }
                 /* code */
                 break;
             case 'f':                 //modificar libro
+            {
+                char opt1;
+                string newCode;
+                int indice;
+                do{
+                cout<<"Ingrese el codigo del libro que desea modificar: ";
+                cin>>newCode;
+                if(!repeatedBookCode(newCode, booksList, indice)){
+                    cout<<"Ingrese un codigo existente!"<<endl;
+                }
+                }while(!repeatedBookCode(newCode, booksList));
+                cout<<"---------------"<<endl;
+                cout<<"¿Qué desea modificar?"<<endl;
+                cout<<"a. bookCode"<<endl<<"b.bookTitle"<<endl<<"c.author"<<endl<<"d.genre"<<endl<<"e.releaseYear"<<endl<<"f.bookPrice"<<endl<<"g.rentalPrice"<<endl<<"h.bookStatus"<<endl<<"i. Quien lo tiene"<<endl;
+                cin>>opt1;
+                switch (opt1)
+                {
+                case 'a':  //codigo
+                {
+                    do{
+                    cout<<"Ingrese el codigo modificado: ";
+                    cin>>newCode;
+                    if(repeatedBookCode(newCode, booksList)){
+                        cout<<"Ingrese un codigo no repetido!"<<endl;
+                    }
+                    }while(repeatedBookCode(newCode, booksList));
+
+                    booksList[indice].bookCode=newCode;
+                    break;
+                }
+                case 'b':   //Titulo
+                {
+                    cout<<"Ingrese el título modificado:  ";
+                    cin.ignore();
+                    getline(cin,booksList[indice].bookTitle);
+                }
+                    break;
+                case 'c':    //autor
+                {
+                    cout<<"Ingrese el autor modificado:  ";
+                    cin.ignore();
+                    getline(cin,booksList[indice].author);
+                }
+                    break;
+                case 'd':    //genero
+                {
+                    cout<<"Ingrese el genero modificado:  ";
+                    cin>>booksList[indice].genre;
+                }
+                    break;
+                case 'e':     //año
+                {
+                    cout<<"Ingrese el año modificado:  ";
+                    cin>>booksList[indice].releaseYear;
+                }
+                    break;
+                case 'f':      //precio del libro
+                {
+                    cout<<"Ingrese el precio del libro modificado:  ";
+                    cin>>booksList[indice].bookPrice;
+                }
+                    break;
+                case 'g':       //renta del libro
+                {
+                    cout<<"Ingrese el valor de alquiler modificado:  ";
+                    cin>>booksList[indice].rentalPrice;
+                }
+                    break;
+                case 'h':        //estado del libro
+                {
+                    cout<<"Ingrese el estado del libro modificado:  ";
+                    cin>>booksList[indice].bookStatus;
+                }
+                    break;
+                case 'i':        //quien lo tiene
+                {
+                    cout<<"Ingrese el nombre de usuario de quien lo tiene modificado:  ";
+                    cin>>booksList[indice].by;
+                }
+                    break;
+                
+                default:
+                    {std::cout<<opt1<<". no es una opción válida"<<endl;
+                    }
+                    break;
+                }
+                booksData.close();
+                ofstream booksData1;
+                booksData1.open("../assets/booksData.csv");
+
+                booksData1<<"bookCode,bookTitle,author,genre,releaseYear,bookPrice,rentalPrice,bookStatus,by";
+                
+                int indexToWrite=0;
+                while(booksList[indexToWrite].bookCode!=""){
+                        booksData1<<endl<<booksList[indexToWrite].bookCode<<','<<booksList[indexToWrite].bookTitle<<','<<booksList[indexToWrite].author<<','<<booksList[indexToWrite].genre<<','<<booksList[indexToWrite].releaseYear<<','<<booksList[indexToWrite].bookPrice<<','<<booksList[indexToWrite].rentalPrice<<','<<booksList[indexToWrite].bookStatus<<','<<booksList[indexToWrite].by;
+                        indexToWrite++;
+                }                
+                cout<<"Libro modificado exitosamente!"<<endl;
+                booksData1.close();
+
+                booksData.open("../assets/booksData.csv");
+            }      //end of modificar libro
+            
                 /* code */
                 break;
             case 'g':
