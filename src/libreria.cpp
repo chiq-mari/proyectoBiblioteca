@@ -21,13 +21,14 @@ struct booksInfo{
     string genre;
     string releaseYear;
     string bookPrice;
-    string rentalPrice;
+    string rentalPrice; 
     string bookStatus;
     string by="nadie";
 };
 
 //variables globales
 userInfo emptyUser={"","", "", "", "", "", ""};
+booksInfo emptyBook={"","","","","","","","",""};
 
 //declaraciones
 void getUsers( userInfo[], ifstream& );   // gets a list with the users info as userInfo datatype
@@ -50,7 +51,9 @@ bool repeatedBookCode(string, booksInfo[], int&);
 
 bool repeatedBookCode(string, booksInfo[]);
 
-bool repeatedBook(booksInfo, booksInfo[]);      
+bool repeatedBook(booksInfo, booksInfo[]);
+
+void movePByOne(booksInfo[], int);
 
 int main(){
 
@@ -144,7 +147,7 @@ int main(){
                 string newUserStatus;
                 string newUserType;
                 string newBook;
-                std::cout<<"Ingrese los datos del nuevo usuario"<<endl;
+                std::cout<<"Ingrese los datos del nuevo usuario"<<endl<<"---------------"<<endl;
                 std::cout<<"Nombre: ";
                 cin>>newName;
                 std::cout<<"Apellido: ";
@@ -202,6 +205,8 @@ int main(){
                     usersData1<<endl<<usersList[indexToWrite].name<<','<<usersList[indexToWrite].lastName<<','<<usersList[indexToWrite].username<<','<<usersList[indexToWrite].password<<','<<usersList[indexToWrite].userStatus<<','<<usersList[indexToWrite].userType<<','<<usersList[indexToWrite].book;
                     indexToWrite++;
                 }
+                std::cout<<endl<<"Usuario "<<newUsername<<" eliminado con éxito!"<<endl<<"---------------"<<endl;
+
                 usersData1.close();                  //close ofstream
                 usersData.open("../assets/usersData.csv");     //open ifstream
             }            
@@ -221,8 +226,6 @@ int main(){
                 }                
                 }while(!repeatedUsername( newUsername, usersList));
 
-                std::cout<<indexToSuspend;
-
                 if(usersList[indexToSuspend].userStatus=="suspended"){
                     std::cout<<"Ya el usuario se encuentra suspendido"<<endl;
                 }else{
@@ -239,6 +242,8 @@ int main(){
                     }
                     usersData1.close();                  //close ofstream
                     usersData.open("../assets/usersData.csv");     //open ifstream
+                    std::cout<<"El usuario ha sido suspendido"<<endl;
+
                 }
             }
                 /* code */
@@ -255,7 +260,7 @@ int main(){
                     string newBookStatus= "disponible";
                     string newBy="nadie";
 
-                std::cout<<"Ingrese los datos del libro"<<endl;
+                std::cout<<"Ingrese los datos del libro"<<endl<<"---------------"<<endl;
                 do{
                    std::cout<<"Código del libro: ";
                    cin>>newBookCode;
@@ -268,7 +273,7 @@ int main(){
                 cin.ignore();
                 std::cout<<"Título del libro: ";
                 getline(cin,newBookTitle);
-                std::cout<<endl<<"Autor: ";
+                std::cout<<"Autor: ";
                 getline(cin,newAuthor);
                 std::cout<<"Genero: ";
                 cin>>newGenre;
@@ -290,15 +295,46 @@ int main(){
                 booksData.open("../assets/booksData.csv");
                 getBooks(booksList, booksData);
 
-                printBooks(booksList);
+                std::cout<<endl<<"Libro agregado satisfactoriamente!"<<endl<<"---------------"<<endl;
+            }
+                /* code */
+                break;
+            case 'e':                  //eliminar libro
+            {
+                int indice;
+                string newCode;
+                do{
+                cout<<"Ingrese el codigo del libro que desea eliminar: ";
+                cin>>newCode;
+                if(!repeatedBookCode(newCode, booksList, indice)){
+                    cout<<"Ingrese un codigo existente!"<<endl;
+                }
+                }while(!repeatedBookCode(newCode, booksList));
+
+                movePByOne(booksList,indice);
+
+                booksData.close();
+
+                ofstream booksData1;
+                booksData1.open("../assets/booksData.csv");
+
+                booksData1<<"bookCode,bookTitle,author,genre,releaseYear,bookPrice,rentalPrice,bookStatus,by";
+                
+                int indexToWrite=0;
+                while(booksList[indexToWrite].bookCode!=""){
+                        booksData1<<endl<<booksList[indexToWrite].bookCode<<','<<booksList[indexToWrite].bookTitle<<','<<booksList[indexToWrite].author<<','<<booksList[indexToWrite].genre<<','<<booksList[indexToWrite].releaseYear<<','<<booksList[indexToWrite].bookPrice<<','<<booksList[indexToWrite].rentalPrice<<','<<booksList[indexToWrite].bookStatus<<','<<booksList[indexToWrite].by;
+                        indexToWrite++;
+                }
+                
+                cout<<"Libro eliminado"<<endl;
+                booksData1.close();
+
+                booksData.open("../assets/booksData.csv");
 
             }
                 /* code */
                 break;
-            case 'e':
-                /* code */
-                break;
-            case 'f':
+            case 'f':                 //modificar libro
                 /* code */
                 break;
             case 'g':
@@ -375,7 +411,7 @@ int main(){
          ///////////////////////all allowed within system (end)
 
         //ask again
-        std::cout<< "Presione 0 si desea salir y cualquier otro nro para continuar con otra acción"<<endl;
+        std::cout<<"---------------"<<endl<<"Presione 0 si desea salir y cualquier otro nro para continuar con otra acción"<<endl;
         cin>>numAnswer;
         if(numAnswer==0){
             inSystem=false;
@@ -385,17 +421,6 @@ int main(){
 
     }//while para seguir dentro del sistena
     std::cout<<"---------------"<<endl<<"Gracias por preferirnos!"<<endl;
-
-    printBooks(booksList);
-    printUsers(usersList);
-
-    int y=0;
-    std::cout<<repeatedBookCode("PK58", booksList)<<endl;
-    std::cout<<repeatedBookCode("PK57", booksList, y)<<endl<<y;
-
-    booksInfo bookcito= {"OH73","Awopbopaloobop","Karlotte Jull","non-fiction","2015","18","10","disponible","nadie"};
-
-    std::cout<<repeatedBook(bookcito, booksList);
 
 }//main
 
@@ -565,5 +590,13 @@ bool repeatedBook(booksInfo a, booksInfo booksArray[]){
         }
     }
     return false;
+    
+}
+
+void movePByOne(booksInfo booksArray[], int a){   //knwoing it has 150 elements at most
+    for(int i=a; i<149; i++){
+        booksArray[i]=booksArray[i+1];
+    }
+    booksArray[149]=emptyBook;
     
 }
