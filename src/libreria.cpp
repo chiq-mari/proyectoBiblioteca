@@ -511,6 +511,13 @@ int main(){
                 break;
             case 'h':        //alquilar libro
             {
+                int indice2=0;
+                repeatedUsername(actualUser.username,usersList, indice2);
+                if(usersList[indice2].book!="none"){
+                    cout<<"Usted ya ha alquilado un libro"<<endl;
+                    break;
+                }
+
                 int indice;
                 string genero;
                 char opt2;
