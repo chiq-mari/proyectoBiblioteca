@@ -2,6 +2,7 @@
 #include<fstream>
 #include<sstream>
 #include<conio.h>
+#include<iomanip>
 using namespace std;
 
 struct userInfo{
@@ -54,6 +55,8 @@ bool repeatedBookCode(string, booksInfo[]);
 bool repeatedBook(booksInfo, booksInfo[]);
 
 void movePByOne(booksInfo[], int);
+
+void printByCategory(string, booksInfo[]);
 
 int main(){
 
@@ -438,13 +441,78 @@ int main(){
             
                 /* code */
                 break;
-            case 'g':
+            case 'g':        //comprar libro
+            {
+                int indice;
+                string genero;
+                char opt2;
+                string code;
+                cout<<"Seleccione el genero que desea de libro"<<endl<<"a.romance"<<endl<<"b.non-fiction"<<endl<<"c.sci-fiction"<<endl<<"d.mystery"<<endl;
+                cin>>opt2;
+                cout<<"---------------"<<endl;
+                switch (opt2)
+                {
+                case 'a':
+                    {genero="romance";}
+                    break;
+                case 'b':
+                    {genero="non-fiction";}
+                    break;
+                case 'c':
+                    {genero="sci-fiction";}
+                    break;
+                case 'd':
+                    {genero="mystery";}
+                    break;
+                
+                default:
+                    cout<<"Dicho genero no existe "<<endl;
+                    genero="no existe";
+                    break;
+                }
+
+                if(genero=="no existe"){
+                    break;
+                }
+                cout<<"Estos son los libros disponibles para su categoria"<<endl<<"---------------"<<endl;
+                printByCategory(genero, booksList);
+                cout<<"---------------"<<endl;
+
+                do{
+                cout<<"Ingrese el codigo del libro que desea comprar: ";
+                cin>>code;
+                if(!repeatedBookCode(code, booksList, indice)){
+                    cout<<"Ingrese un codigo existente!"<<endl;
+                }
+                }while(!repeatedBookCode(code, booksList));
+
+                //eliminar
+                movePByOne(booksList, indice);
+                booksData.close();
+
+                ofstream booksData1;
+                booksData1.open("../assets/booksData.csv");
+
+                booksData1<<"bookCode,bookTitle,author,genre,releaseYear,bookPrice,rentalPrice,bookStatus,by";
+                
+                int indexToWrite=0;
+                while(booksList[indexToWrite].bookCode!=""){
+                        booksData1<<endl<<booksList[indexToWrite].bookCode<<','<<booksList[indexToWrite].bookTitle<<','<<booksList[indexToWrite].author<<','<<booksList[indexToWrite].genre<<','<<booksList[indexToWrite].releaseYear<<','<<booksList[indexToWrite].bookPrice<<','<<booksList[indexToWrite].rentalPrice<<','<<booksList[indexToWrite].bookStatus<<','<<booksList[indexToWrite].by;
+                        indexToWrite++;
+                }                
+                booksData1.close();
+                booksData.open("../assets/booksData.csv");
+
+                //eliminar
+                cout<<"Listo!"<<endl<<"Gracias por su adquisición!"<<endl;
+                
+            }
                 /* code */
                 break;
-            case 'h':
+            case 'h':        //alquilar libro
                 /* code */
                 break;
-            case 'i':
+            case 'i':        //retornar libro
                 /* code */
                 break;
             default:
@@ -700,4 +768,17 @@ void movePByOne(booksInfo booksArray[], int a){   //knwoing it has 150 elements 
     }
     booksArray[149]=emptyBook;
     
+}
+void printByCategory(string category, booksInfo booksArray[]){
+
+    int counter =0;
+    std::cout<<setw(8)<<"bookCode"<<','<<setw(39)<<"bookTitle"<<','<<setw(22)<<"author"<<','<<setw(12)<<"genre"<<','<<setw(12)<<"releaseYear"<<','<<setw(10)<<"bookPrice"<<','<<setw(12)<<"rentalPrice"<<','<<setw(12)<<"bookStatus"<<endl;
+
+    while(booksArray[counter].bookCode!=""){        
+        if(booksArray[counter].genre==category){
+            std::cout<<setw(8)<<booksArray[counter].bookCode<<','<<setw(39)<<booksArray[counter].bookTitle<<','<<setw(22)<<booksArray[counter].author<<','<<setw(12)<<booksArray[counter].genre<<','<<setw(12)<<booksArray[counter].releaseYear<<','<<setw(10)<<booksArray[counter].bookPrice<<','<<setw(12)<<booksArray[counter].rentalPrice<<','<<setw(12)<<booksArray[counter].bookStatus<<endl;
+        }
+        counter++;
+    }
+
 }
