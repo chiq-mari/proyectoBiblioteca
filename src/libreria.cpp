@@ -62,8 +62,8 @@ int main(){
     getUsers(usersList, usersData);
     int userIndex=0;
     char opt;                              //to choose an action
-    cout<<"¡Bienvenido a la libreria!"<<endl<<endl;
-    cout<<"Log in"<<endl<<"---------------"<<endl;
+    std::cout<<"¡Bienvenido a la libreria!"<<endl<<endl;
+    std::cout<<"Log in"<<endl<<"---------------"<<endl;
     int logInAttempts=1;
 
     while(inSystem==false && logInAttempts<=3){  //log in start
@@ -74,37 +74,37 @@ int main(){
     char ch1;
     int i=0;
   
-    cout<<"Usuario: ";
+    std::cout<<"Usuario: ";
     cin>>username;
-    cout<<"Contraseña: ";
+    std::cout<<"Contraseña: ";
     ch= getch();
     while(ch!=13){
-        cout<<'*';
+        std::cout<<'*';
         ch1=ch;
         password+=ch1;
         ch=getch();
     }  
     
-    cout<<endl<<"Autenticando..."<<endl;
+    std::cout<<endl<<"Autenticando..."<<endl;
 
     if (validUser(username,password,usersList, userIndex)){
         status=usersList[userIndex].userStatus;
         if(status=="active"){     // si esta activo permite la entrada
-            cout<<"Log in exitoso"<<endl<<"---------------"<<endl;
+            std::cout<<"Log in exitoso"<<endl<<"---------------"<<endl;
             inSystem=true;
         }else{                    //la unica otra opcion es que este suspendido
-            cout<<"Su cuenta se encuentra suspendida"<<endl;
+            std::cout<<"Su cuenta se encuentra suspendida"<<endl;
             inSystem=false;
             logInAttempts=4;
         }
 
     }else{
-        cout<<"Ha ingresado un nombre de usuario o contraseña incorrecto."<<endl<<"---------------"<<endl;
+        std::cout<<"Ha ingresado un nombre de usuario o contraseña incorrecto."<<endl<<"---------------"<<endl;
         logInAttempts++;
         inSystem=false;
         password="";
         if(logInAttempts==4){
-            cout<<"fin del nro de intentos"<<endl<<"---------------"<<endl;
+            std::cout<<"fin del nro de intentos"<<endl<<"---------------"<<endl;
         }
     }
 }// log in end
@@ -116,24 +116,24 @@ int main(){
     actualUser=usersList[userIndex];
 
     if(inSystem==true){   //welcome message if login was successful
-        cout<<endl<<"Bienvenido "<<actualUser.username<<"! ("<<actualUser.userType<<')'<<endl;
+        std::cout<<endl<<"Bienvenido "<<actualUser.username<<"! ("<<actualUser.userType<<')'<<endl;
     }
 
     while(inSystem){
         //////////////////////all allowed within system(beginnig)
         if(actualUser.userType=="admin"){   //case for admin
-            cout<<endl<<"Elija una entre las siguientes opciones: "<<endl;
-            cout<<"a. Crear cuenta"<<endl;
-            cout<<"b. Eliminar cuenta"<<endl;
-            cout<<"c. Suspender usuario"<<endl;
-            cout<<"d. Añadir libro"<<endl;
-            cout<<"e. Eliminar libro"<<endl;
-            cout<<"f. Modificar libro"<<endl;
-            cout<<"g. Comprar libro"<<endl;
-            cout<<"h. Alquilar libro"<<endl;
-            cout<<"i. Retornar un libro"<<endl;
+            std::cout<<endl<<"Elija una entre las siguientes opciones: "<<endl;
+            std::cout<<"a. Crear cuenta"<<endl;
+            std::cout<<"b. Eliminar cuenta"<<endl;
+            std::cout<<"c. Suspender usuario"<<endl;
+            std::cout<<"d. Añadir libro"<<endl;
+            std::cout<<"e. Eliminar libro"<<endl;
+            std::cout<<"f. Modificar libro"<<endl;
+            std::cout<<"g. Comprar libro"<<endl;
+            std::cout<<"h. Alquilar libro"<<endl;
+            std::cout<<"i. Retornar un libro"<<endl;
             cin>>opt;
-            cout<<"---------------"<<endl;
+            std::cout<<"---------------"<<endl;
             switch (opt)
             {
             case 'a':    //crear cuenta
@@ -144,27 +144,27 @@ int main(){
                 string newUserStatus;
                 string newUserType;
                 string newBook;
-                cout<<"Ingrese los datos del nuevo usuario"<<endl;
-                cout<<"Nombre: ";
+                std::cout<<"Ingrese los datos del nuevo usuario"<<endl;
+                std::cout<<"Nombre: ";
                 cin>>newName;
-                cout<<"Apellido: ";
+                std::cout<<"Apellido: ";
                 cin>>newLastName;
                 do{
-                cout<<"Nombre de usuario: ";
+                std::cout<<"Nombre de usuario: ";
                 cin>>newUsername;
                 if(repeatedUsername(newUsername,usersList)){
-                    cout<<"Ingrese un nombre de usuario no repetido"<<endl;
+                    std::cout<<"Ingrese un nombre de usuario no repetido"<<endl;
                 }
                 }while(repeatedUsername(newUsername,usersList));
 
-                cout<<"Contraseña: ";
+                std::cout<<"Contraseña: ";
                 cin>>newPassword;
-                cout<<"Estado de usuario: ";
+                std::cout<<"Estado de usuario: ";
                 cin>>newUserStatus;
-                cout<<"Tipo de usuario: ";
+                std::cout<<"Tipo de usuario: ";
                 cin>>newUserType;
                 newBook="none";
-                cout<<endl<<"Usuario creado con éxito!"<<endl<<"---------------"<<endl;
+                std::cout<<endl<<"Usuario creado con éxito!"<<endl<<"---------------"<<endl;
 
                 usersData.close();
                 ofstream usersData1;
@@ -185,10 +185,10 @@ int main(){
                 int indexToDelete;
                 int indexToWrite=0; 
                 do{               //obtiene el indice
-                cout<<"Ingrese el nombre de usuario que desea eliminar: ";
+                std::cout<<"Ingrese el nombre de usuario que desea eliminar: ";
                 cin>>newUsername;
                 if(!repeatedUsername( newUsername, usersList, indexToDelete)){
-                    cout<<"Ingrese un nombre de usuario válido"<<endl;    
+                    std::cout<<"Ingrese un nombre de usuario válido"<<endl;    
                 }                
                 }while(!repeatedUsername( newUsername, usersList));
 
@@ -214,17 +214,17 @@ int main(){
                 int indexToWrite=0;
 
                 do{               //obtiene el indice
-                cout<<"Ingrese el nombre de usuario que desea suspender: ";
+                std::cout<<"Ingrese el nombre de usuario que desea suspender: ";
                 cin>>newUsername;
                 if(!repeatedUsername( newUsername, usersList, indexToSuspend)){
-                    cout<<"Ingrese un nombre de usuario válido"<<endl;    
+                    std::cout<<"Ingrese un nombre de usuario válido"<<endl;    
                 }                
                 }while(!repeatedUsername( newUsername, usersList));
 
-                cout<<indexToSuspend;
+                std::cout<<indexToSuspend;
 
                 if(usersList[indexToSuspend].userStatus=="suspended"){
-                    cout<<"Ya el usuario se encuentra suspendido"<<endl;
+                    std::cout<<"Ya el usuario se encuentra suspendido"<<endl;
                 }else{
                     usersList[indexToSuspend].userStatus="suspended";
 
@@ -243,7 +243,56 @@ int main(){
             }
                 /* code */
                 break;
-            case 'd':
+            case 'd':      //añadir libro
+            {   
+                    string newBookCode;
+                    string newBookTitle;
+                    string newAuthor;
+                    string newGenre;
+                    string newReleaseYear;
+                    string newBookPrice;
+                    string newRentalPrice;
+                    string newBookStatus= "disponible";
+                    string newBy="nadie";
+
+                std::cout<<"Ingrese los datos del libro"<<endl;
+                do{
+                   std::cout<<"Código del libro: ";
+                   cin>>newBookCode;
+                   if(repeatedBookCode(newBookCode,booksList)){
+                    std::cout<<"Codigo no disponible!"<<endl;
+                   }
+
+                }while(repeatedBookCode(newBookCode,booksList));
+
+                cin.ignore();
+                std::cout<<"Título del libro: ";
+                getline(cin,newBookTitle);
+                std::cout<<endl<<"Autor: ";
+                getline(cin,newAuthor);
+                std::cout<<"Genero: ";
+                cin>>newGenre;
+                std::cout<<"Año: ";
+                cin>>newReleaseYear;
+                std::cout<<"Precio de compra: ";
+                cin>>newBookPrice;
+                std::cout<<"Precio de alquiler: ";
+                cin>>newRentalPrice;
+
+                booksData.close();
+
+                ofstream booksData1;
+                booksData1.open("../assets/booksData.csv", ios::app);
+                booksData1<<endl<<newBookCode<<','<<newBookTitle<<','<<newAuthor<<','<<newGenre<<','<<newReleaseYear<<','<<newBookPrice<<','<<newRentalPrice<<','<<newBookStatus<<','<<newBy;
+
+                booksData1.close();
+
+                booksData.open("../assets/booksData.csv");
+                getBooks(booksList, booksData);
+
+                printBooks(booksList);
+
+            }
                 /* code */
                 break;
             case 'e':
@@ -262,18 +311,18 @@ int main(){
                 /* code */
                 break;
             default:
-                cout<<opt<<". no es una opción válida"<<endl;
+                std::cout<<opt<<". no es una opción válida"<<endl;
                 break;
             }
             //end of case for admin
         }else if(actualUser.userType=="employee"){    //case for employee
-            cout<<"Elija una entre las siguientes opciones: "<<endl;
-            cout<<"a. Añadir libro"<<endl;
-            cout<<"b. Eliminar libro"<<endl;
-            cout<<"c. Modificar libro"<<endl;
-            cout<<"d. Comprar libro"<<endl;
-            cout<<"e. Alquilar libro"<<endl;
-            cout<<"f. Retornar un libro"<<endl;
+            std::cout<<"Elija una entre las siguientes opciones: "<<endl;
+            std::cout<<"a. Añadir libro"<<endl;
+            std::cout<<"b. Eliminar libro"<<endl;
+            std::cout<<"c. Modificar libro"<<endl;
+            std::cout<<"d. Comprar libro"<<endl;
+            std::cout<<"e. Alquilar libro"<<endl;
+            std::cout<<"f. Retornar un libro"<<endl;
             cin>>opt;
             switch (opt)
             {
@@ -296,15 +345,15 @@ int main(){
                 /* code */
                 break;
             default:
-                cout<<opt<<". no es una opción válida"<<endl;
+                std::cout<<opt<<". no es una opción válida"<<endl;
                 break;
             }
             //end of case for employee
         }else{   //case for client
-            cout<<"Elija una entre las siguientes opciones: "<<endl;
-            cout<<"a. Comprar libro"<<endl;
-            cout<<"b. Alquilar libro"<<endl;
-            cout<<"c. Retornar un libro"<<endl;
+            std::cout<<"Elija una entre las siguientes opciones: "<<endl;
+            std::cout<<"a. Comprar libro"<<endl;
+            std::cout<<"b. Alquilar libro"<<endl;
+            std::cout<<"c. Retornar un libro"<<endl;
             cin>>opt;
             switch (opt)
             {
@@ -318,7 +367,7 @@ int main(){
                 /* code */
                 break;
             default:
-                cout<<opt<<". no es una opción válida"<<endl;
+                std::cout<<opt<<". no es una opción válida"<<endl;
                 break;
             }
             //end of case for client
@@ -326,7 +375,7 @@ int main(){
          ///////////////////////all allowed within system (end)
 
         //ask again
-        cout<< "Presione 0 si desea salir y cualquier otro nro para continuar con otra acción"<<endl;
+        std::cout<< "Presione 0 si desea salir y cualquier otro nro para continuar con otra acción"<<endl;
         cin>>numAnswer;
         if(numAnswer==0){
             inSystem=false;
@@ -335,18 +384,18 @@ int main(){
         }
 
     }//while para seguir dentro del sistena
-    cout<<"---------------"<<endl<<"Gracias por preferirnos!"<<endl;
+    std::cout<<"---------------"<<endl<<"Gracias por preferirnos!"<<endl;
 
     printBooks(booksList);
     printUsers(usersList);
 
     int y=0;
-    cout<<repeatedBookCode("PK58", booksList)<<endl;
-    cout<<repeatedBookCode("PK57", booksList, y)<<endl<<y;
+    std::cout<<repeatedBookCode("PK58", booksList)<<endl;
+    std::cout<<repeatedBookCode("PK57", booksList, y)<<endl<<y;
 
     booksInfo bookcito= {"OH73","Awopbopaloobop","Karlotte Jull","non-fiction","2015","18","10","disponible","nadie"};
 
-    cout<<repeatedBook(bookcito, booksList);
+    std::cout<<repeatedBook(bookcito, booksList);
 
 }//main
 
@@ -461,7 +510,7 @@ void getBooks(booksInfo booksArray[], ifstream& file){
 void printBooks(booksInfo booksArray[]){
     int count=0;
     while(booksArray[count].bookCode!=""){
-        cout<<booksArray[count].bookCode<<','<<booksArray[count].bookTitle<<','<<booksArray[count].author<<','<<booksArray[count].genre<<','<<booksArray[count].releaseYear<<','<<booksArray[count].bookPrice<<','<<booksArray[count].rentalPrice<<','<<booksArray[count].bookStatus<<','<<booksArray[count].by<<endl;
+        std::cout<<booksArray[count].bookCode<<','<<booksArray[count].bookTitle<<','<<booksArray[count].author<<','<<booksArray[count].genre<<','<<booksArray[count].releaseYear<<','<<booksArray[count].bookPrice<<','<<booksArray[count].rentalPrice<<','<<booksArray[count].bookStatus<<','<<booksArray[count].by<<endl;
         count++;
     }
 
@@ -470,7 +519,7 @@ void printBooks(booksInfo booksArray[]){
 void printUsers(userInfo usersArray[]){
     int count=0;
     while(usersArray[count].name!=""){
-        cout<<usersArray[count].name<<','<<usersArray[count].lastName<<','<<usersArray[count].username<<','<<usersArray[count].password<<','<<usersArray[count].userStatus<<','<<usersArray[count].userType<<','<<usersArray[count].book<<endl;
+        std::cout<<usersArray[count].name<<','<<usersArray[count].lastName<<','<<usersArray[count].username<<','<<usersArray[count].password<<','<<usersArray[count].userStatus<<','<<usersArray[count].userType<<','<<usersArray[count].book<<endl;
         count++;
     }
 
@@ -507,7 +556,7 @@ bool repeatedBook(booksInfo a, booksInfo booksArray[]){
     int counter=0;
     //two books are the same if they have equal title, author, genre, year
     while(booksArray[counter].bookCode!=""){
-        cout<<booksArray[counter].bookCode<<endl;
+        std::cout<<booksArray[counter].bookCode<<endl;
         if(a.bookTitle==booksArray[counter].bookTitle && a.author==booksArray[counter].author && a.genre==booksArray[counter].genre && a.releaseYear==booksArray[counter].releaseYear){
             return true;
         }
