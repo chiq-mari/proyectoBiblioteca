@@ -81,7 +81,7 @@ int main(){
     int i=0;
   
     std::cout<<"Usuario: ";
-    cin>>username;
+    std::cin>>username;
     std::cout<<"Contraseña: ";
     ch= getch();
     while(ch!=13){
@@ -138,7 +138,7 @@ int main(){
             std::cout<<"g. Comprar libro"<<endl;
             std::cout<<"h. Alquilar libro"<<endl;
             std::cout<<"i. Retornar un libro"<<endl;
-            cin>>opt;
+            std::cin>>opt;
             std::cout<<"---------------"<<endl;
             switch (opt)
             {
@@ -152,23 +152,23 @@ int main(){
                 string newBook;
                 std::cout<<"Ingrese los datos del nuevo usuario"<<endl<<"---------------"<<endl;
                 std::cout<<"Nombre: ";
-                cin>>newName;
+                std::cin>>newName;
                 std::cout<<"Apellido: ";
-                cin>>newLastName;
+                std::cin>>newLastName;
                 do{
                 std::cout<<"Nombre de usuario: ";
-                cin>>newUsername;
+                std::cin>>newUsername;
                 if(repeatedUsername(newUsername,usersList)){
                     std::cout<<"Ingrese un nombre de usuario no repetido"<<endl;
                 }
                 }while(repeatedUsername(newUsername,usersList));
 
                 std::cout<<"Contraseña: ";
-                cin>>newPassword;
+                std::cin>>newPassword;
                 newUserStatus="active";  //todo usuario nuevo comineza siendo activo
                 do{
                     std::cout<<"Tipo de usuario: ";
-                    cin>>newUserType;
+                    std::cin>>newUserType;
                     if(newUserType!="client" && newUserType!="employee"){
                         cout<<"El tipo debe ser client o employee"<<endl;
                     }
@@ -196,7 +196,7 @@ int main(){
                 int indexToWrite=0; 
                 do{               //obtiene el indice
                 std::cout<<"Ingrese el nombre de usuario que desea eliminar: ";
-                cin>>newUsername;
+                std::cin>>newUsername;
                 if(!repeatedUsername( newUsername, usersList, indexToDelete)){
                     std::cout<<"Ingrese un nombre de usuario válido"<<endl;    
                 }                
@@ -227,7 +227,7 @@ int main(){
 
                 do{               //obtiene el indice
                 std::cout<<"Ingrese el nombre de usuario que desea suspender: ";
-                cin>>newUsername;
+                std::cin>>newUsername;
                 if(!repeatedUsername( newUsername, usersList, indexToSuspend)){
                     std::cout<<"Ingrese un nombre de usuario válido"<<endl;    
                 }                
@@ -270,31 +270,31 @@ int main(){
                 std::cout<<"Ingrese los datos del libro"<<endl<<"---------------"<<endl;
                 do{
                    std::cout<<"Código del libro: ";
-                   cin>>newBookCode;
+                   std::cin>>newBookCode;
                    if(repeatedBookCode(newBookCode,booksList)){
                     std::cout<<"Codigo no disponible. Ingrese un código nuevo"<<endl;
                    }
 
                 }while(repeatedBookCode(newBookCode,booksList));
 
-                cin.ignore();
+                std::cin.ignore();
                 std::cout<<"Título del libro: ";
-                getline(cin,newBookTitle);
+                std::getline(std::cin,newBookTitle);
                 std::cout<<"Autor: ";
-                getline(cin,newAuthor);
+                std::getline(std::cin,newAuthor);
                 do{
                     std::cout<<"Genero: ";
-                    cin>>newGenre;
+                    std::cin>>newGenre;
                     if(newGenre!="non-fiction" && newGenre!="sci-fiction" && newGenre!="mystery" && newGenre!="romance"){
                         cout<<"Ingrese un genero válido: mystery, non-fiction, sci-fiction o romance"<<endl;
                     }
                 }while(newGenre!="non-fiction" && newGenre!="sci-fiction" && newGenre!="mystery" && newGenre!="romance");
                 std::cout<<"Año: ";
-                cin>>newReleaseYear;
+                std::cin>>newReleaseYear;
                 std::cout<<"Precio de compra: ";
-                cin>>newBookPrice;
+                std::cin>>newBookPrice;
                 std::cout<<"Precio de alquiler: ";
-                cin>>newRentalPrice;
+                std::cin>>newRentalPrice;
 
                 booksData.close();
 
@@ -318,7 +318,7 @@ int main(){
                 string titulo;
                 do{
                 cout<<"Ingrese el codigo del libro que desea eliminar: ";
-                cin>>newCode;
+                std::cin>>newCode;
                 if(!repeatedBookCode(newCode, booksList, indice)){
                     cout<<"Ingrese un codigo existente!"<<endl;
                 }
@@ -353,7 +353,7 @@ int main(){
                 int indice;
                 do{
                 cout<<"Ingrese el codigo del libro que desea modificar: ";
-                cin>>newCode;
+                std::cin>>newCode;
                 if(!repeatedBookCode(newCode, booksList, indice)){
                     cout<<"Ingrese un codigo existente!"<<endl;
                 }
@@ -362,14 +362,14 @@ int main(){
                 cout<<"Modificara el libro "<<booksList[indice].bookTitle<<endl<<endl;
                 cout<<"¿Qué desea modificar?"<<endl;
                 cout<<"a.bookCode"<<endl<<"b.bookTitle"<<endl<<"c.author"<<endl<<"d.genre"<<endl<<"e.releaseYear"<<endl<<"f.bookPrice"<<endl<<"g.rentalPrice"<<endl<<"h.bookStatus"<<endl<<"i. Quien lo tiene"<<endl;
-                cin>>opt1;
+                std::cin>>opt1;
                 switch (opt1)
                 {
                 case 'a':  //codigo
                 {
                     do{
                     cout<<"Ingrese el codigo nuevo: ";
-                    cin>>newCode;
+                    std::cin>>newCode;
                     if(repeatedBookCode(newCode, booksList)){
                         cout<<"Ingrese un codigo no repetido!"<<endl;
                     }
@@ -381,22 +381,22 @@ int main(){
                 case 'b':   //Titulo
                 {
                     cout<<"Ingrese el nuevo título:  ";
-                    cin.ignore();
-                    getline(cin,booksList[indice].bookTitle);
+                    std::cin.ignore();
+                    std::getline(std::cin,booksList[indice].bookTitle);
                 }
                     break;
                 case 'c':    //autor
                 {
                     cout<<"Ingrese el autor modificado:  ";
-                    cin.ignore();
-                    getline(cin,booksList[indice].author);
+                    std::cin.ignore();
+                    std::getline(std::cin,booksList[indice].author);
                 }
                     break;
                 case 'd':    //genero
                 {
                     do{
                         cout<<"Ingrese el genero modificado:  ";
-                        cin>>booksList[indice].genre;
+                        std::cin>>booksList[indice].genre;
                         if(booksList[indice].genre!="non-fiction" && booksList[indice].genre!="sci-fiction" && booksList[indice].genre!="mystery" && booksList[indice].genre!="romance"){
                             cout<<"Ingrese un genero válido: mystery, non-fiction, sci-fiction o romance"<<endl;
                         }
@@ -406,26 +406,26 @@ int main(){
                 case 'e':     //año
                 {
                     cout<<"Ingrese el año modificado:  ";
-                    cin>>booksList[indice].releaseYear;
+                    std::cin>>booksList[indice].releaseYear;
                 }
                     break;
                 case 'f':      //precio del libro
                 {
                     cout<<"Ingrese el nuevo precio del libro:  ";
-                    cin>>booksList[indice].bookPrice;
+                    std::cin>>booksList[indice].bookPrice;
                 }
                     break;
                 case 'g':       //renta del libro
                 {
                     cout<<"Ingrese el nuevo valor de alquiler:  ";
-                    cin>>booksList[indice].rentalPrice;
+                    std::cin>>booksList[indice].rentalPrice;
                 }
                     break;
                 case 'h':        //estado del libro
                 {
                     do{
                         cout<<"Ingrese el nuevo estado del libro:  ";
-                        cin>>booksList[indice].bookStatus;
+                        std::cin>>booksList[indice].bookStatus;
                     if (booksList[indice].bookStatus!="alquilado" && booksList[indice].bookStatus!="disponible" ){
                         cout<<"Los posibles estados son solo: disponible o alquilado"<<endl;
                     }
@@ -436,7 +436,7 @@ int main(){
                 {
                     do{
                     cout<<"Ingrese el nombre de usuario correcto de quien lo alquilo o nadie:  ";
-                    cin>>booksList[indice].by;
+                    std::cin>>booksList[indice].by;
                     if(!repeatedUsername(booksList[indice].by, usersList) && booksList[indice].by!="nadie"){
                         cout<<"Ingrese un nombre de usuario existente o nadie"<<endl;
                     }
@@ -489,7 +489,7 @@ int main(){
                 char opt2;
                 string code;
                 cout<<"Seleccione el genero que desea de libro"<<endl<<"a.romance"<<endl<<"b.non-fiction"<<endl<<"c.sci-fiction"<<endl<<"d.mystery"<<endl;
-                cin>>opt2;
+                std::cin>>opt2;
                 cout<<"---------------"<<endl;
                 switch (opt2)
                 {
@@ -521,7 +521,7 @@ int main(){
 
                 do{
                 cout<<"Ingrese el codigo del libro que desea comprar: ";
-                cin>>code;
+                std::cin>>code;
                 if(!repeatedBookCode(code, booksList, indice)){
                     cout<<"Ingrese un codigo existente!"<<endl;
                 }
@@ -564,7 +564,7 @@ int main(){
                 char opt2;
                 string code;
                 cout<<"Seleccione el genero que desea de libro"<<endl<<"a.romance"<<endl<<"b.non-fiction"<<endl<<"c.sci-fiction"<<endl<<"d.mystery"<<endl;
-                cin>>opt2;
+                std::cin>>opt2;
                 cout<<"---------------"<<endl;
                 switch (opt2)
                 {
@@ -596,7 +596,7 @@ int main(){
 
                 do{
                 cout<<"Ingrese el codigo del libro que desea alquilar: ";
-                cin>>code;
+                std::cin>>code;
                 if(!repeatedBookCode(code, booksList, indice)){
                     cout<<"Ingrese un codigo existente!"<<endl;
                 }
@@ -647,22 +647,24 @@ int main(){
                 cout<<"Alquiler procesado"<<endl;
             }
                 break;
-            case 'i':        //retornar libro
+            case 'i':        //retornar libro de mi parte
                 {
                     string code;
                     int indice3;    //indice para el libro
                     int indice4;    //indice para la persona
                     cout<<"Ingrese el codigo del libro que desea retornar: ";
-                    cin>>code;
+                    std::cin>>code;
                     if(!repeatedBookCode(code, booksList, indice3)){
                         cout<<"El codigo no corresponde a ningún libro"<<endl;
-                        break;
-                    }else{   //si se da que corresponde a un libro
-                        if(booksList[indice3].bookStatus=="disponible"){
+                        break;                                                // el codigo esta
+                    }else if(booksList[indice3].bookStatus=="disponible"){   //si se da que corresponde a un libro ya disponible
                             cout<<"El libro ya esta devuelto"<<endl;
                             break;
-                        }
-                    }
+                    }else if(booksList[indice3].by!=actualUser.username){   // el libro en efecto esta alquilado
+                        cout<<"El libro solo lo puede devolver la persona que lo alquilo"<<endl;    //corresponde a alguien que no soy yo
+                        break;
+                    }else{                                                   //el libro esta alquilado por mi
+
                     booksList[indice3].bookStatus="disponible";      //cambia estado de libro
                     booksList[indice3].by="nadie"; 
                     repeatedUsername(actualUser.username,usersList,indice4 );
@@ -699,6 +701,7 @@ int main(){
                     usersData1.close();                  //close ofstream
                     usersData.open("../assets/usersData.csv");     //open ifstream
                     cout<<"Libro retornado con exito!"<<endl;
+                    }
                 }
                 break;
             default:
@@ -714,7 +717,7 @@ int main(){
             std::cout<<"d. Comprar libro"<<endl;
             std::cout<<"e. Alquilar libro"<<endl;
             std::cout<<"f. Retornar un libro"<<endl;
-            cin>>opt;
+            std::cin>>opt;
             switch (opt)
             {
             case 'a':
@@ -745,7 +748,7 @@ int main(){
             std::cout<<"a. Comprar libro"<<endl;
             std::cout<<"b. Alquilar libro"<<endl;
             std::cout<<"c. Retornar un libro"<<endl;
-            cin>>opt;
+            std::cin>>opt;
             switch (opt)
             {
             case 'a':
@@ -767,7 +770,7 @@ int main(){
 
         //ask again
         std::cout<<"---------------"<<endl<<"Presione 0 si desea salir y cualquier otro nro para continuar con otra acción"<<endl;
-        cin>>numAnswer;
+        std::cin>>numAnswer;
         if(numAnswer==0){
             inSystem=false;
         }else{
