@@ -165,10 +165,14 @@ int main(){
 
                 std::cout<<"Contraseña: ";
                 cin>>newPassword;
-                std::cout<<"Estado de usuario: ";
-                cin>>newUserStatus;
-                std::cout<<"Tipo de usuario: ";
-                cin>>newUserType;
+                newUserStatus="active";  //todo usuario nuevo comineza siendo activo
+                do{
+                    std::cout<<"Tipo de usuario: ";
+                    cin>>newUserType;
+                    if(newUserType!="client" && newUserType!="employee"){
+                        cout<<"El tipo debe ser client o employee"<<endl;
+                    }
+                }while(newUserType!="client" && newUserType!="employee");
                 newBook="none";
                 std::cout<<endl<<"Usuario creado con éxito!"<<endl<<"---------------"<<endl;
 
@@ -230,7 +234,7 @@ int main(){
                 }while(!repeatedUsername( newUsername, usersList));
 
                 if(usersList[indexToSuspend].userStatus=="suspended"){
-                    std::cout<<"Ya el usuario se encuentra suspendido"<<endl;
+                    std::cout<<endl<<"Ya el usuario se encuentra suspendido"<<endl;
                 }else{
                     usersList[indexToSuspend].userStatus="suspended";
 
@@ -245,7 +249,7 @@ int main(){
                     }
                     usersData1.close();                  //close ofstream
                     usersData.open("../assets/usersData.csv");     //open ifstream
-                    std::cout<<"El usuario ha sido suspendido"<<endl;
+                    std::cout<<endl<<"El usuario ha sido suspendido"<<endl;
 
                 }
             }
@@ -268,7 +272,7 @@ int main(){
                    std::cout<<"Código del libro: ";
                    cin>>newBookCode;
                    if(repeatedBookCode(newBookCode,booksList)){
-                    std::cout<<"Codigo no disponible!"<<endl;
+                    std::cout<<"Codigo no disponible. Ingrese un código nuevo"<<endl;
                    }
 
                 }while(repeatedBookCode(newBookCode,booksList));
@@ -278,8 +282,13 @@ int main(){
                 getline(cin,newBookTitle);
                 std::cout<<"Autor: ";
                 getline(cin,newAuthor);
-                std::cout<<"Genero: ";
-                cin>>newGenre;
+                do{
+                    std::cout<<"Genero: ";
+                    cin>>newGenre;
+                    if(newGenre!="non-fiction" && newGenre!="sci-fiction" && newGenre!="mystery" && newGenre!="romance"){
+                        cout<<"Ingrese un genero válido: mystery, non-fiction, sci-fiction o romance"<<endl;
+                    }
+                }while(newGenre!="non-fiction" && newGenre!="sci-fiction" && newGenre!="mystery" && newGenre!="romance");
                 std::cout<<"Año: ";
                 cin>>newReleaseYear;
                 std::cout<<"Precio de compra: ";
@@ -306,6 +315,7 @@ int main(){
             {
                 int indice;
                 string newCode;
+                string titulo;
                 do{
                 cout<<"Ingrese el codigo del libro que desea eliminar: ";
                 cin>>newCode;
@@ -314,6 +324,7 @@ int main(){
                 }
                 }while(!repeatedBookCode(newCode, booksList));
 
+                titulo=booksList[indice].bookTitle;
                 movePByOne(booksList,indice);
 
                 booksData.close();
@@ -328,7 +339,7 @@ int main(){
                         booksData1<<endl<<booksList[indexToWrite].bookCode<<','<<booksList[indexToWrite].bookTitle<<','<<booksList[indexToWrite].author<<','<<booksList[indexToWrite].genre<<','<<booksList[indexToWrite].releaseYear<<','<<booksList[indexToWrite].bookPrice<<','<<booksList[indexToWrite].rentalPrice<<','<<booksList[indexToWrite].bookStatus<<','<<booksList[indexToWrite].by;
                         indexToWrite++;
                 }                
-                cout<<"Libro eliminado"<<endl;
+                cout<<endl<<"Se ha eliminado el libro: "<<titulo<<endl;
                 booksData1.close();
 
                 booksData.open("../assets/booksData.csv");
@@ -348,15 +359,16 @@ int main(){
                 }
                 }while(!repeatedBookCode(newCode, booksList));
                 cout<<"---------------"<<endl;
+                cout<<"Modificara el libro "<<booksList[indice].bookTitle<<endl<<endl;
                 cout<<"¿Qué desea modificar?"<<endl;
-                cout<<"a. bookCode"<<endl<<"b.bookTitle"<<endl<<"c.author"<<endl<<"d.genre"<<endl<<"e.releaseYear"<<endl<<"f.bookPrice"<<endl<<"g.rentalPrice"<<endl<<"h.bookStatus"<<endl<<"i. Quien lo tiene"<<endl;
+                cout<<"a.bookCode"<<endl<<"b.bookTitle"<<endl<<"c.author"<<endl<<"d.genre"<<endl<<"e.releaseYear"<<endl<<"f.bookPrice"<<endl<<"g.rentalPrice"<<endl<<"h.bookStatus"<<endl<<"i. Quien lo tiene"<<endl;
                 cin>>opt1;
                 switch (opt1)
                 {
                 case 'a':  //codigo
                 {
                     do{
-                    cout<<"Ingrese el codigo modificado: ";
+                    cout<<"Ingrese el codigo nuevo: ";
                     cin>>newCode;
                     if(repeatedBookCode(newCode, booksList)){
                         cout<<"Ingrese un codigo no repetido!"<<endl;
@@ -368,7 +380,7 @@ int main(){
                 }
                 case 'b':   //Titulo
                 {
-                    cout<<"Ingrese el título modificado:  ";
+                    cout<<"Ingrese el nuevo título:  ";
                     cin.ignore();
                     getline(cin,booksList[indice].bookTitle);
                 }
@@ -382,8 +394,13 @@ int main(){
                     break;
                 case 'd':    //genero
                 {
-                    cout<<"Ingrese el genero modificado:  ";
-                    cin>>booksList[indice].genre;
+                    do{
+                        cout<<"Ingrese el genero modificado:  ";
+                        cin>>booksList[indice].genre;
+                        if(booksList[indice].genre!="non-fiction" && booksList[indice].genre!="sci-fiction" && booksList[indice].genre!="mystery" && booksList[indice].genre!="romance"){
+                            cout<<"Ingrese un genero válido: mystery, non-fiction, sci-fiction o romance"<<endl;
+                        }
+                    }while(booksList[indice].genre!="non-fiction" && booksList[indice].genre!="sci-fiction" && booksList[indice].genre!="mystery" && booksList[indice].genre!="romance");
                 }
                     break;
                 case 'e':     //año
@@ -394,32 +411,58 @@ int main(){
                     break;
                 case 'f':      //precio del libro
                 {
-                    cout<<"Ingrese el precio del libro modificado:  ";
+                    cout<<"Ingrese el nuevo precio del libro:  ";
                     cin>>booksList[indice].bookPrice;
                 }
                     break;
                 case 'g':       //renta del libro
                 {
-                    cout<<"Ingrese el valor de alquiler modificado:  ";
+                    cout<<"Ingrese el nuevo valor de alquiler:  ";
                     cin>>booksList[indice].rentalPrice;
                 }
                     break;
                 case 'h':        //estado del libro
                 {
-                    cout<<"Ingrese el estado del libro modificado:  ";
-                    cin>>booksList[indice].bookStatus;
+                    do{
+                        cout<<"Ingrese el nuevo estado del libro:  ";
+                        cin>>booksList[indice].bookStatus;
+                    if (booksList[indice].bookStatus!="alquilado" && booksList[indice].bookStatus!="disponible" ){
+                        cout<<"Los posibles estados son solo: disponible o alquilado"<<endl;
+                    }
+                    }while(booksList[indice].bookStatus!="alquilado" && booksList[indice].bookStatus!="disponible" );
                 }
                     break;
                 case 'i':        //quien lo tiene
                 {
-                    cout<<"Ingrese el nombre de usuario de quien lo tiene modificado:  ";
+                    do{
+                    cout<<"Ingrese el nombre de usuario correcto de quien lo alquilo o nadie:  ";
                     cin>>booksList[indice].by;
+                    if(!repeatedUsername(booksList[indice].by, usersList) && booksList[indice].by!="nadie"){
+                        cout<<"Ingrese un nombre de usuario existente o nadie"<<endl;
+                    }
+                    }while(!repeatedUsername(booksList[indice].by, usersList) && booksList[indice].by!="nadie");
+
+                    if(booksList[indice].by!="nadie"){
+                        int index=0;
+                        repeatedUsername(booksList[indice].by, usersList, index);
+                        usersList[index].book=newCode;
+
+                        usersData.close();                      //cierre el flujo de entrada
+                        ofstream usersData1("../assets/usersData.csv");   // abra el de salida
+                        int indexToWrite=0;
+                        usersData1<<"nombre,lastName,username,password,userStatus,userType,book";
+                        while(usersList[indexToWrite].name!=""){
+                            usersData1<<endl<<usersList[indexToWrite].name<<','<<usersList[indexToWrite].lastName<<','<<usersList[indexToWrite].username<<','<<usersList[indexToWrite].password<<','<<usersList[indexToWrite].userStatus<<','<<usersList[indexToWrite].userType<<','<<usersList[indexToWrite].book;
+                            indexToWrite++;
+                        }
+                        usersData1.close();                  //close ofstream
+                        usersData.open("../assets/usersData.csv");     //open ifstream
+                    }
                 }
                     break;
                 
                 default:
-                    {std::cout<<opt1<<". no es una opción válida"<<endl;
-                    }
+                    {std::cout<<opt1<<". no es una opción válida"<<endl;}
                     break;
                 }
                 booksData.close();
@@ -438,8 +481,6 @@ int main(){
 
                 booksData.open("../assets/booksData.csv");
             }      //end of modificar libro
-            
-                /* code */
                 break;
             case 'g':        //comprar libro
             {
@@ -504,7 +545,7 @@ int main(){
                 booksData.open("../assets/booksData.csv");
 
                 //eliminar
-                cout<<"Listo!"<<endl<<"Gracias por su adquisición!"<<endl;
+                cout<<endl<<"Listo!"<<endl<<"Gracias por su adquisición!"<<endl;
                 
             }
                 /* code */
@@ -563,6 +604,7 @@ int main(){
 
                 // modifica en lista(Book), file, usuario
                 booksList[indice].bookStatus="alquilado";   //lista
+                booksList[indice].by=actualUser.username;
 
                 booksData.close();   
 
@@ -606,7 +648,58 @@ int main(){
             }
                 break;
             case 'i':        //retornar libro
-                /* code */
+                {
+                    string code;
+                    int indice3;    //indice para el libro
+                    int indice4;    //indice para la persona
+                    cout<<"Ingrese el codigo del libro que desea retornar: ";
+                    cin>>code;
+                    if(!repeatedBookCode(code, booksList, indice3)){
+                        cout<<"El codigo no corresponde a ningún libro"<<endl;
+                        break;
+                    }else{   //si se da que corresponde a un libro
+                        if(booksList[indice3].bookStatus=="disponible"){
+                            cout<<"El libro ya esta devuelto"<<endl;
+                            break;
+                        }
+                    }
+                    booksList[indice3].bookStatus="disponible";      //cambia estado de libro
+                    booksList[indice3].by="nadie"; 
+                    repeatedUsername(actualUser.username,usersList,indice4 );
+                    usersList[indice4].book="none";
+
+                    //escribelos
+
+                    booksData.close();   
+                    //escribe en file books
+                    ofstream booksData1;
+                    booksData1.open("../assets/booksData.csv");
+
+                    booksData1<<"bookCode,bookTitle,author,genre,releaseYear,bookPrice,rentalPrice,bookStatus,by";
+                
+                    int indexToWrite=0;
+                    while(booksList[indexToWrite].bookCode!=""){
+                            booksData1<<endl<<booksList[indexToWrite].bookCode<<','<<booksList[indexToWrite].bookTitle<<','<<booksList[indexToWrite].author<<','<<booksList[indexToWrite].genre<<','<<booksList[indexToWrite].releaseYear<<','<<booksList[indexToWrite].bookPrice<<','<<booksList[indexToWrite].rentalPrice<<','<<booksList[indexToWrite].bookStatus<<','<<booksList[indexToWrite].by;
+                            indexToWrite++;
+                    }                
+                    booksData1.close();
+                    booksData.open("../assets/booksData.csv");
+
+                    //en file users
+                    usersData.close();                      //cierre el flujo de entrada
+
+                    ofstream usersData1("../assets/usersData.csv");   // abra el de salida
+
+                    indexToWrite=0;
+                    usersData1<<"nombre,lastName,username,password,userStatus,userType,book";
+                    while(usersList[indexToWrite].name!=""){
+                        usersData1<<endl<<usersList[indexToWrite].name<<','<<usersList[indexToWrite].lastName<<','<<usersList[indexToWrite].username<<','<<usersList[indexToWrite].password<<','<<usersList[indexToWrite].userStatus<<','<<usersList[indexToWrite].userType<<','<<usersList[indexToWrite].book;
+                        indexToWrite++;
+                    }
+                    usersData1.close();                  //close ofstream
+                    usersData.open("../assets/usersData.csv");     //open ifstream
+                    cout<<"Libro retornado con exito!"<<endl;
+                }
                 break;
             default:
                 std::cout<<opt<<". no es una opción válida"<<endl;
